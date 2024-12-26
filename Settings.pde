@@ -7,7 +7,7 @@ static class Settings {
   static int BRAIN_STEPS_MIN = 300;
   static int BRAIN_STEPS_MAX = 500;
   static float BRAIN_MUTATION_PROBABILITY = 0.01; // 1%
-  static int POPULATION_SIZE = 1000;
+  static int POPULATION_SIZE = 2000;
   
   static int GOAL_X = WIDTH / 2;
   static int GOAL_Y = 10;

@@ -1,11 +1,13 @@
 class Population {
   Dot[] dots;
   int numIdleDots;
+  int numSuccessfulDots;
   int generation;
   
   Population(int size) {
     dots = new Dot[size];
     numIdleDots = 0;
+    numSuccessfulDots = 0;
     generation = 1;
     for (int i = 0; i < size; i++) {
       dots[i] = new Dot();
@@ -16,7 +18,10 @@ class Population {
     for (Dot dot : dots) {
       boolean becameIdle = dot.move();
       dot.draw();
-      if (becameIdle) numIdleDots++;
+      if (becameIdle) {
+        numIdleDots++;
+        if (dot.reachedGoal) numSuccessfulDots++;
+      }
     }
   }
   
@@ -34,10 +39,11 @@ class Population {
     Dot[] newDots = new Dot[dots.length];
     for (int i = 0; i < dots.length; i++) {
       Dot parent = selectParent();
-      newDots[i] = parent.clone();
+      newDots[i] = parent.fitness == 0 ? new Dot() : parent.clone();
     }
     dots = newDots;
     numIdleDots = 0;
+    numSuccessfulDots = 0;
     generation++;
   }
   

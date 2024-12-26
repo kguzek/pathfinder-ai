@@ -42,11 +42,23 @@ class Dot {
     velocity.add(acceleration);
     velocity.limit(Settings.MAXIMUM_DOT_VELOCITY);
     position.add(velocity);
-    if (position.x < 0 || position.x > width || position.y < 0 || position.y > height) {
+    if (!isInBounds()) {
       dead = true;
       return true;
     }
     return false;
+  }
+  
+  boolean isInBounds() {
+    if (position.x < 0 || position.x > width || position.y < 0 || position.y > height) {
+      return false;
+    }
+    for (Obstacle obstacle : obstacles) {
+      if (obstacle.collidesWith(position)) {
+        return false;
+      }
+    }
+    return true;
   }
   
   void calculateFitness() {
