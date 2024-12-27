@@ -3,6 +3,7 @@ class Population {
   int numIdleDots;
   int numSuccessfulDots;
   int generation;
+  int stepThreshold = Settings.BRAIN_STEPS_MAX;
   
   Population(int size) {
     dots = new Dot[size];
@@ -18,6 +19,10 @@ class Population {
     for (Dot dot : dots) {
       boolean becameIdle = dot.move();
       dot.draw();
+      if (dot.brain.step > stepThreshold) {
+        dot.dead = true;
+        becameIdle = true;
+      }
       if (becameIdle) {
         numIdleDots++;
         if (dot.reachedGoal) numSuccessfulDots++;
@@ -37,14 +42,29 @@ class Population {
   
   void performNaturalSelection() {
     Dot[] newDots = new Dot[dots.length];
-    for (int i = 0; i < dots.length; i++) {
+    newDots[dots.length - 1] = getBestDot();
+    newDots[dots.length - 1].isBest = true;
+    for (int i = 0; i < dots.length - 1; i++) {
       Dot parent = selectParent();
-      newDots[i] = parent.fitness == 0 ? new Dot() : parent.clone();
+      newDots[i] = parent.clone();
     }
     dots = newDots;
     numIdleDots = 0;
     numSuccessfulDots = 0;
     generation++;
+  }
+  
+  Dot getBestDot() {
+    Dot bestDot = dots[0];
+    for (Dot dot : dots) {
+      if (dot.fitness > bestDot.fitness) {
+        bestDot = dot;
+      }
+    }
+    if (bestDot.reachedGoal && bestDot.brain.step < stepThreshold) {
+      stepThreshold = bestDot.brain.step;
+    }
+    return bestDot.clone();
   }
   
   Dot selectParent() {
@@ -64,7 +84,7 @@ class Population {
   }
   
   void mutate() {
-    for (int i = 1; i < dots.length; i++) {
+    for (int i = 0; i < dots.length - 1; i++) {
       Dot dot = dots[i];
       dot.brain.mutate();
     }

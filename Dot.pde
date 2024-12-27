@@ -6,6 +6,7 @@ class Dot {
   Brain brain;
   boolean dead = false;
   boolean reachedGoal = false;
+  boolean isBest = false;
   
   Dot() {
     brain = new Brain(0);
@@ -21,8 +22,15 @@ class Dot {
   }
   
   void draw() {
-    fill(0);
-    ellipse(position.x, position.y, Settings.DOT_RADIUS, Settings.DOT_RADIUS);
+    float radius = Settings.DOT_RADIUS;
+    if (isBest) {
+      radius *= 1.5;
+      fill(0, 0, 255);
+    } else {
+      fill(0);
+    }
+    noStroke();
+    ellipse(position.x, position.y, radius, radius);
   }
   
   // Returns a boolean indicating if the dot just became idle.
@@ -30,7 +38,7 @@ class Dot {
     if (dead || reachedGoal) return false;
     if (goal.isReachedBy(position)) {
       reachedGoal = true;
-      fitness = 1;
+      fitness = 1 + 1 / (brain.step * brain.step);
       return true;
     }
     if (brain.step < brain.directions.length) {
@@ -62,7 +70,7 @@ class Dot {
   }
   
   void calculateFitness() {
-    if (dead || reachedGoal) return;
+    if (reachedGoal) return;
     float distance = goal.distanceTo(position);
     fitness = 1.0 / (distance * distance);
   }

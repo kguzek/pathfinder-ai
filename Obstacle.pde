@@ -16,9 +16,9 @@ class Obstacle {
   }
   
   void randomizeColor() {
-    r = floor(random(256));
-    g = floor(random(256));
-    b = floor(random(256));
+    r = floor(random(192));
+    g = floor(random(128));
+    b = floor(random(192));
   }
   
   void draw() {

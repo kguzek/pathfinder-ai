@@ -9,7 +9,11 @@ void settings() {
 void setup() {
   population = new Population(Settings.POPULATION_SIZE);
   goal = new Goal();
-  obstacles = new Obstacle[] { new Obstacle(width / 4, height / 2, width / 2, 30) };
+  int obstacleWidth = width * 4 / 5;
+  obstacles = new Obstacle[] {
+    new Obstacle(0, height * 2 / 5, obstacleWidth, 10),
+      new Obstacle(width - obstacleWidth, height * 3 / 5, obstacleWidth, 10)
+    };
 }
 
 void draw() {
