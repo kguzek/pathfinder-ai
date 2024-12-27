@@ -4,7 +4,7 @@ class Brain {
 
   constructor(size) {
     if (size === 0) {
-      size = floor(random(Settings.BRAIN_STEPS_MIN), Settings.BRAIN_STEPS_MAX);
+      size = floor(random(Settings.BRAIN_STEPS_MIN, Settings.BRAIN_STEPS_MAX));
     }
     this.directions = new Array(size).fill(null);
     this.randomize();
