@@ -5,6 +5,7 @@ let obstacles = [];
 function setup() {
   createCanvas(Settings.WIDTH, Settings.HEIGHT);
   population = new Population(Settings.POPULATION_SIZE);
+  restoreEvolutionState();
   goal = new Goal();
   const obstacleWidth = (width * 4) / 5;
   obstacles = [
@@ -20,6 +21,7 @@ function draw() {
   }
   if (population.isIdle()) {
     population.calculateFitness();
+    saveEvolutionState();
     population.performNaturalSelection();
     population.mutate();
   } else {
