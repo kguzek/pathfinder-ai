@@ -5,6 +5,7 @@ class Dot {
   fitness = 0;
   brain;
   dead = false;
+  diedByObstacle = false;
   reachedGoal = false;
   isBest = false;
 
@@ -22,14 +23,14 @@ class Dot {
   }
 
   draw() {
-    let radius = Settings.DOT_RADIUS;
-    if (this.isBest) {
-      radius *= 1.5;
-      fill(0, 0, 255);
-    } else {
-      fill(0);
-    }
+    const radius = Settings.DOT_RADIUS;
     noStroke();
+    if (this.isBest) {
+      fill(0, 0, 255);
+      const radiusThick = radius * Settings.DOT_BEST_THICKNESS;
+      ellipse(this.position.x, this.position.y, radiusThick, radiusThick);
+    }
+    fill(0);
     ellipse(this.position.x, this.position.y, radius, radius);
   }
 
@@ -51,6 +52,7 @@ class Dot {
     this.velocity.limit(Settings.MAXIMUM_DOT_VELOCITY);
     this.position.add(this.velocity);
     if (!this.isInBounds()) {
+      this.diedByObstacle = true;
       this.dead = true;
       return true;
     }
@@ -78,5 +80,8 @@ class Dot {
     if (this.reachedGoal) return;
     const distance = goal.distanceTo(this.position);
     this.fitness = 1.0 / (distance * distance);
+    if (this.diedByObstacle) {
+      this.fitness /= Settings.DOT_OBSTACLE_PENALTY;
+    }
   }
 }

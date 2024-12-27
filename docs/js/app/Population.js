@@ -21,6 +21,7 @@ class Population {
       dot.draw();
       if (dot.brain.step > this.stepThreshold) {
         dot.dead = true;
+        dot.diedByObstacle = true;
         becameIdle = true;
       }
       if (becameIdle) {

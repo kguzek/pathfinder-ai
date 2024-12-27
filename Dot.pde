@@ -5,6 +5,7 @@ class Dot {
   float fitness = 0;
   Brain brain;
   boolean dead = false;
+  boolean diedByObstacle = false;
   boolean reachedGoal = false;
   boolean isBest = false;
   
@@ -23,13 +24,13 @@ class Dot {
   
   void draw() {
     float radius = Settings.DOT_RADIUS;
-    if (isBest) {
-      radius *= 1.5;
-      fill(0, 0, 255);
-    } else {
-      fill(0);
-    }
     noStroke();
+    if (isBest) {
+      fill(0, 0, 255);
+      float radiusThick = radius * Settings.DOT_BEST_THICKNESS;
+      ellipse(position.x, position.y, radiusThick, radiusThick);
+    }
+    fill(0);
     ellipse(position.x, position.y, radius, radius);
   }
   
@@ -52,6 +53,7 @@ class Dot {
     position.add(velocity);
     if (!isInBounds()) {
       dead = true;
+      diedByObstacle = true;
       return true;
     }
     return false;
@@ -73,5 +75,8 @@ class Dot {
     if (reachedGoal) return;
     float distance = goal.distanceTo(position);
     fitness = 1.0 / (distance * distance);
+    if (diedByObstacle) {
+      fitness /= Settings.DOT_OBSTACLE_PENALTY;
+    }
   }
 }
