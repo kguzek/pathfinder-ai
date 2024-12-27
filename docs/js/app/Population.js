@@ -26,7 +26,7 @@ class Population {
       }
       if (becameIdle) {
         this.numIdleDots++;
-        if (dot.reachedGoal) numSuccessfulDots++;
+        if (dot.reachedGoal) this.numSuccessfulDots++;
       }
     }
   }
