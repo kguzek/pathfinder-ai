@@ -1,6 +1,7 @@
 class Settings {
   static WIDTH = 800;
   static HEIGHT = 800;
+  static FONT_SIZE = 24;
 
   static DOT_RADIUS = 4;
   static MAXIMUM_DOT_VELOCITY = 5;
@@ -13,6 +14,6 @@ class Settings {
 
   static GOAL_X = Settings.WIDTH / 2;
   static GOAL_Y = 50;
-  static GOAL_RADIUS = 5;
+  static GOAL_RADIUS = 8;
   static GOAL_TOLERANCE = 5;
 }

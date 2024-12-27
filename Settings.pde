@@ -1,6 +1,7 @@
 static class Settings {
   static int WIDTH = 800;
   static int HEIGHT = 800;
+  static int FONT_SIZE = 24;
   
   static int DOT_RADIUS = 4;
   static int MAXIMUM_DOT_VELOCITY = 5;

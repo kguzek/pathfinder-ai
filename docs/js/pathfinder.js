@@ -28,7 +28,7 @@ function draw() {
     population.draw();
     goal.draw();
   }
-  textSize(30);
+  textSize(Settings.FONT_SIZE);
   fill(16);
   textAlign(LEFT, TOP);
   text("Generation: " + population.generation, 10, 10);
