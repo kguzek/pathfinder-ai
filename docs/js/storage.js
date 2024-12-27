@@ -1,6 +1,7 @@
 /** A script which saves the evolution state in the browser LocalStorage. */
 
-const BRAINS_TO_SAVE = 200;
+// Ballpark amount of brains to save in the LocalStorage, obtained using trial and error
+let BRAINS_TO_SAVE = 550;
 
 function updateTitle() {
   document.title = `Pathfinder | Generation ${population.generation}`;
@@ -10,17 +11,32 @@ function saveEvolutionState() {
   if (!population) return;
   updateTitle();
   const { dots, ...state } = population;
-  const directionArrays = dots
+  let angles = dots
     .sort((a, b) => b.fitness - a.fitness)
     .slice(0, BRAINS_TO_SAVE)
     .map((dot) =>
-      dot.brain.directions.map((direction) => ({
-        x: direction.x,
-        y: direction.y,
-      }))
+      dot.brain.directions.map((direction) =>
+        Math.atan2(direction.y, direction.x)
+      )
     );
-  const stringified = JSON.stringify({ ...state, directionArrays });
-  localStorage.setItem("evolution", stringified);
+  // Try to save the evolution state, downgrading the amount of saved brains if necessary
+  // This is done to prevent the LocalStorage from running out of space
+  while (BRAINS_TO_SAVE > 0) {
+    const stringified = JSON.stringify({ ...state, angles });
+    try {
+      localStorage.setItem("evolution", stringified);
+    } catch {
+      console.warn(
+        "Downgrading the amount of saved brains from",
+        BRAINS_TO_SAVE--,
+        "to",
+        BRAINS_TO_SAVE
+      );
+      angles.pop();
+      continue;
+    }
+    break;
+  }
 }
 
 function restoreEvolutionState() {
@@ -35,26 +51,13 @@ function restoreEvolutionState() {
     return;
   }
   if (!parsed) return;
-  const { directionArrays, ...state } = parsed;
+  const { angles, ...state } = parsed;
   Object.assign(population, state);
   // Replicate the entire population based on the top brains saved
   for (let i = 0; i < Settings.POPULATION_SIZE; i++) {
-    const directions = directionArrays[i % BRAINS_TO_SAVE];
-    const previousBrainSteps = population.dots[i].brain.directions.length;
-    // Ensure the dot's brain has the correct number of steps
-    if (previousBrainSteps < directions.length) {
-      population.dots[i].brain.directions.push(
-        ...Array.from(
-          { length: directions.length - previousBrainSteps },
-          () => new p5.Vector()
-        )
-      );
-    } else {
-      population.dots[i].brain.directions.length = directions.length;
-    }
-    for (let j = 0; j < directions.length; j++) {
-      Object.assign(population.dots[i].brain.directions[j], directions[j]);
-    }
+    population.dots[i].brain.directions = angles[i % angles.length].map(
+      (angle) => p5.Vector.fromAngle(angle)
+    );
   }
   updateTitle();
   population.performNaturalSelection();
