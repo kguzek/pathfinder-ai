@@ -21,16 +21,19 @@ class Brain {
   void mutate() {
     for (int i = 0; i < directions.length; i++) {
       if (random(1) < Settings.BRAIN_MUTATION_PROBABILITY) {
-        float angle = random(TWO_PI);
-        directions[i] = PVector.fromAngle(angle);
+        setRandomAngle(i);
       }
     }
   }
   
+  void setRandomAngle(int i) {
+    float angle = random(TWO_PI);
+    directions[i] = PVector.fromAngle(angle);
+  }
+  
   void randomize() {
     for (int i = 0; i < directions.length; i++) {
-      float angle = random(TWO_PI);
-      directions[i] = PVector.fromAngle(angle);
+      setRandomAngle(i);
     }
   }
 }

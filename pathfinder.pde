@@ -17,7 +17,10 @@ void setup() {
 }
 
 void draw() {
-  background(216);
+  background(232);
+  for (Obstacle obstacle : obstacles) {
+    obstacle.draw();
+  }
   if (population.isIdle()) {
     population.calculateFitness();
     population.performNaturalSelection();
@@ -25,9 +28,6 @@ void draw() {
   } else {
     population.draw();
     goal.draw();
-  }
-  for (Obstacle obstacle : obstacles) {
-    obstacle.draw();
   }
   textSize(30);
   fill(16);
