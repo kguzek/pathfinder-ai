@@ -10,7 +10,7 @@ class Settings {
   static BRAIN_STEPS_MAX = 500;
   static BRAIN_MUTATION_PROBABILITY = 0.01; // 1%
   static POPULATION_SIZE = 1000;
-  static DOT_OBSTACLE_PENALTY = 1.5;
+  static DOT_OBSTACLE_PENALTY = 3;
   static DOT_BEST_THICKNESS = 2.0;
 
   static GOAL_X = Settings.WIDTH / 2;
