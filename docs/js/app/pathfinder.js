@@ -21,7 +21,12 @@ function draw() {
   }
   if (population.isIdle()) {
     population.calculateFitness();
-    saveEvolutionState();
+    if (
+      Settings.PROGRESS_SAVE_INTERVAL > 0 &&
+      population.generation % Settings.PROGRESS_SAVE_INTERVAL === 1
+    ) {
+      saveEvolutionState();
+    }
     population.performNaturalSelection();
     population.mutate();
   } else {

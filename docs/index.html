@@ -5,30 +5,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pathfinder | Generation 1</title>
     <script src="https://cdn.jsdelivr.net/npm/p5@1.11.2/lib/p5.min.js"></script>
-    <script src="./js/Settings.js"></script>
+    <script src="./js/app/Settings.js"></script>
     <script src="./js/responsiveness.js"></script>
-    <script src="./js/Goal.js"></script>
-    <script src="./js/Obstacle.js"></script>
-    <script src="./js/Brain.js"></script>
-    <script src="./js/Dot.js"></script>
-    <script src="./js/Population.js"></script>
-    <script src="./js/pathfinder.js"></script>
+    <script src="./js/app/Goal.js"></script>
+    <script src="./js/app/Obstacle.js"></script>
+    <script src="./js/app/Brain.js"></script>
+    <script src="./js/app/Dot.js"></script>
+    <script src="./js/app/Population.js"></script>
+    <script src="./js/app/pathfinder.js"></script>
     <script src="./js/storage.js"></script>
+    <script defer src="./js/menu.js"></script>
     <style>
       body {
         font-family: Arial, sans-serif;
         margin: 0;
         padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       }
-      h1 {
-        text-align: center;
-      }
+
       p {
-        text-align: center;
+        padding: 0 10px;
       }
-      canvas {
-        display: block;
-        margin: 0 auto;
+
+      #menu {
+        margin: 10px 0;
+        display: flex;
+        gap: 10px;
+      }
+
+      input[type="number"] {
+        width: 2rem;
+      }
+
+      @media screen and (max-width: 600px) {
+        body {
+          font-size: 0.8rem;
+        }
+
+        #menu {
+          flex-direction: column;
+          align-items: center;
+        }
       }
     </style>
   </head>
@@ -41,5 +60,25 @@
         >CodeBullet's YouTube video</a
       >.
     </p>
+    <div id="menu">
+      <button id="toggleLoop" onclick="toggleLoop()">Pause</button>
+      <div title="Set to 0 to disable saving">
+        Save progress every
+        <input
+          id="saveInterval"
+          type="number"
+          value="5"
+          onchange="setSaveInterval(event.target.value)"
+        />
+        generation<span id="s">s</span>
+      </div>
+      <button
+        id="reset"
+        onclick="reset()"
+        title="Press to wipe the civilization"
+      >
+        Reset progress
+      </button>
+    </div>
   </body>
 </html>

@@ -2,6 +2,7 @@ class Settings {
   static WIDTH = 800;
   static HEIGHT = 800;
   static FONT_SIZE = 24;
+  static PROGRESS_SAVE_INTERVAL = 5;
 
   static DOT_RADIUS = 4;
   static MAXIMUM_DOT_VELOCITY = 5;
